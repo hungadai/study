@@ -1,0 +1,38 @@
+// https://discuss.leetcode.com/topic/80336/max-words-package/2
+//
+// This is a interview problem I met on an onsite interview (actually the second round), which is defined by the interviewers the top-hard problems of their interview-problem library.
+//
+// Since I was rejected after the 8-round interview (one online test, three onsite algorithm problems and four culture fit interviews) and we had no agreement on sharing stuff, so here it is.
+//
+// DESCRIPTION
+//
+// You are given a NxN matrix composed of lowercase letters and a list of words. Your task is to find out the largest list of words that can be formed by the letters in the matrix.
+//
+// Constraints:
+//
+// each letter can only be used once for a word;
+// once the cell (letter) in the matrix is taken by a word, then the other words in the same list cannot use that cell again.
+// Example:
+//
+// INPUT:
+//
+// {
+// {‘o’, ‘a’, ‘a’, ‘n’},
+// {‘e’, ‘t’, ‘a’, ‘e’},
+// {‘i’, ‘h’, ‘k’, ‘r’},
+// {‘i’, ‘f’, ‘l’, ‘v’}
+// }
+// {“eat”, “oath”, “aak”, “ner”, “oei”, “thfl”}
+//
+// OUTPUT:
+//
+// {“oei”, “ner”, “aak”, “thfl”}
+//
+// Explanation:
+//
+// Actually all these words can be formed in the matrix, but we have to ensure the biggest list of words.
+//
+// if we take “eat”, then the list should be {“eat”, “oei”};
+// if we take “oath”, then the list should be {“oath”, “aak”, “ner”};
+// if we take “aak”, then the list should be {“oei”, “aak”, “ner”, “thfl”};
+// So we should return the biggest list {“oei”, “aak”, “ner”, “thfl”} as the final result.
