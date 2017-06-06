@@ -1,3 +1,4 @@
+const assert = require('assert');
 
 // https://discuss.leetcode.com/topic/246/round-numbers
 //
@@ -98,10 +99,12 @@ const testcases = [
   },
 ];
 
-testcases.forEach(({ input, expected }, testcaseIndex) => {
+const validator = ({ input, expected }) => {
     const output = round(input);
-    const res = output.every((ele, index) => {
-      return ele === expected[index];
-    });
-    console.log(res, `Testcase ${testcaseIndex} res: ${res}`);
-});
+    assert.deepEqual(output, expected);
+};
+
+module.exports = {
+  testcases,
+  validator,
+};
