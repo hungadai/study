@@ -12,13 +12,13 @@ let failed = [];
 testcases.forEach((testcase, index) => {
   try {
     validator(testcase);
-    console.log(`Testcase ${index} passed`);
+    console.log(`Testcase ${index + 1} passed`);
   } catch (err) {
     failed.push({
       index,
       err
     });
-    console.log(`Testcase ${index} failed`);
+    console.log(`Testcase ${index + 1} failed`);
   }
 });
 

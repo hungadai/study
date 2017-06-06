@@ -8,11 +8,34 @@ const assert = require('assert');
 // c) Tabulated solution
 //
 
-function fibonacci (n) {
+function fibonacciRecursion (n) {
   if (n <= 2) {
     return 1;
   }
-  return fibonacci(n - 1) + fibonacci(n - 2);
+  return fibonacciRecursion(n - 1) + fibonacciRecursion(n - 2);
+}
+
+const lookup = [];
+function fibonacciMemoized (n) {
+  if (!lookup[n]) {
+    if (n <= 2) {
+      lookup[n] = 1;
+    } else {
+      lookup[n] = fibonacciMemoized(n - 1) + fibonacciMemoized(n - 2);
+    }
+  }
+
+  return lookup[n];
+}
+
+function fibonacciTabulated (n) {
+  const lookup = [];
+  lookup[0] = 1;
+  lookup[1] = 1;
+  for (let i=2; i<n; i++) {
+    lookup[i] = lookup[i - 1] + lookup[i - 2];
+  }
+  return lookup[n - 1];
 }
 
 const testcases = [
@@ -39,7 +62,9 @@ const testcases = [
 ];
 
 const validator = ({ input, expected }) => {
-    assert.equal(fibonacci(input), expected);
+    assert.equal(fibonacciRecursion(input), expected);
+    assert.equal(fibonacciMemoized(input), expected);
+    assert.equal(fibonacciTabulated(input), expected);
 };
 
 module.exports = {
