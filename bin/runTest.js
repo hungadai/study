@@ -27,6 +27,6 @@ if (failed.length === 0) {
 } else {
   console.log(`Total ${failed.length} testcases failed... :(`);
   failed.forEach(({ index, err }) => {
-    console.log(`Testcase ${index} err:`, err);
+    console.log(`Testcase ${index + 1} err:`, err);
   });
 }
