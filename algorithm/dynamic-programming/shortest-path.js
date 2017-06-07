@@ -10,14 +10,14 @@ const assert = require('assert');
 // Floyd–Warshall
 
 // function floydWarshallAlgorithm (graph) {
-//   const dists = [];
+//   const dists = {};
 //   const nodeLength = graph.nodes.length;
 //   let i, j, k;
 //
 //   // initialization. set max to every pair of vertices
-//   for (i = 0; i < nodeLength; i++) {
-//     const distForI = [];
-//     for (j = 0; j < nodeLength; j++) {
+//   for (i = 1; i <= nodeLength; i++) {
+//     const distForI = {};
+//     for (j = 1; j <= nodeLength; j++) {
 //       if (j === i) {
 //         distForI[j] = 0;
 //       } else {
@@ -29,39 +29,35 @@ const assert = require('assert');
 //
 //   // edges
 //   graph.edges.forEach(([from, to, weight]) => {
-//     dists[from - 1][to - 1] = weight;
+//     dists[from][to] = weight;
 //   });
 //
 //   // start Floyd-Warshall algorithm
-//   for (k = 0; k < nodeLength; k++) {
-//     for (i = 0; i < nodeLength; i++) {
-//       for (j = 0; j < nodeLength; j++) {
-//         if (i !== j && i !== k && dists[i][j] > dists[i][k] + dists[k][j]) {
+//   for (k = 1; k <= nodeLength; k++) {
+//     for (i = 1; i <= nodeLength; i++) {
+//       for (j = 1; j <= nodeLength; j++) {
+//         if (dists[i][j] > dists[i][k] + dists[k][j]) {
 //           dists[i][j] = dists[i][k] + dists[k][j];
 //         }
 //       }
 //     }
 //   }
-//   return dists;
-// }
 //
-// const dists = floydWarshallAlgorithm(graph);
-// function findShortestDistance ([ from, to ]) {
-//   return dists[from - 1][to - 1];
+//   return dists;
 // }
 
 // small modifications to the original floydWarshallAlgorithm in order to reconstruct the shortest path
 function floydWarshallAlgorithmWithPaths (graph) {
-  const dists = [];
-  const next = [];
+  const dists = {};
+  const next = {};
   const nodeLength = graph.nodes.length;
   let i, j, k;
 
   // initialization. set max to every pair of vertices
-  for (i = 0; i < nodeLength; i++) {
+  for (i = 1; i <= nodeLength; i++) {
     const distForI = [];
     const nextForI = [];
-    for (j = 0; j < nodeLength; j++) {
+    for (j = 1; j <= nodeLength; j++) {
       if (j === i) {
         distForI[j] = 0;
       } else {
@@ -74,16 +70,16 @@ function floydWarshallAlgorithmWithPaths (graph) {
   }
 
   // edges
-  graph.edges.forEach(([from, to, weight]) => {
-    dists[from - 1][to - 1] = weight;
-    next[from - 1][to - 1] = to - 1;
+  graph.edges.forEach(([ from, to, weight ]) => {
+    dists[from][to] = weight;
+    next[from][to] = to;
   });
 
   // start Floyd-Warshall algorithm
-  for (k = 0; k < nodeLength; k++) {
-    for (i = 0; i < nodeLength; i++) {
-      for (j = 0; j < nodeLength; j++) {
-        if (i !== j && i !== k && dists[i][j] > dists[i][k] + dists[k][j]) {
+  for (k = 1; k <= nodeLength; k++) {
+    for (i = 1; i <= nodeLength; i++) {
+      for (j = 1; j <= nodeLength; j++) {
+        if (dists[i][j] > dists[i][k] + dists[k][j]) {
           dists[i][j] = dists[i][k] + dists[k][j];
           next[i][j] = next[i][k];
         }
@@ -106,18 +102,26 @@ const graph = {
     [ 4, 2, -1 ]
   ]
 };
+
+// const dists = floydWarshallAlgorithm(graph);
 const distsWithNext = floydWarshallAlgorithmWithPaths(graph);
+
+// function findShortestDistance ([ from, to ]) {
+//   return dists[from][to];
+// }
 
 function findShortestPath ([ from, to ]) {
   const { dists, next } = distsWithNext;
   const path = [ from ];
 
-  while (next[ path[path.length - 1] - 1 ][ to - 1 ] !== null && path[ path.length - 1 ] !== to) {
-    path.push(next[ path[path.length - 1] - 1 ][ to - 1 ] + 1);
+  let lastElement = path[path.length - 1];
+  while (lastElement !== to && next[lastElement][to] !== null) {
+    lastElement = next[lastElement][to];
+    path.push(lastElement);
   }
 
   return {
-    dist: dists[from - 1][to - 1],
+    dist: dists[from][to],
     path
   };
 }
